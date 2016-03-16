@@ -5,7 +5,7 @@
   "main": "./src/image-gallery",
   "scripts": {
     "start": "gulp dev",
-    "build": "gulp build"
+    "prepublish": "gulp build"
   },
   "repository": {
     "type": "git",
