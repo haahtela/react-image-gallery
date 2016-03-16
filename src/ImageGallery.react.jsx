@@ -9,6 +9,7 @@ const ImageGallery = React.createClass({
     items: React.PropTypes.array.isRequired,
     showThumbnails: React.PropTypes.bool,
     showBullets: React.PropTypes.bool,
+    showCloseButton: React.PropTypes.bool,
     showNav: React.PropTypes.bool,
     showIndex: React.PropTypes.bool,
     indexSeparator: React.PropTypes.string,
@@ -21,7 +22,8 @@ const ImageGallery = React.createClass({
     defaultImage: React.PropTypes.string,
     disableThumbnailScroll: React.PropTypes.bool,
     slideOnThumbnailHover: React.PropTypes.bool,
-    server: React.PropTypes.bool
+    server: React.PropTypes.bool,
+    onCloseClick: React.PropTypes.func
   },
 
   getDefaultProps() {
@@ -29,6 +31,7 @@ const ImageGallery = React.createClass({
       lazyLoad: true,
       showThumbnails: true,
       showNav: true,
+      showCloseButton: false,
       showBullets: false,
       showIndex: false,
       indexSeparator: ' / ',
@@ -287,6 +290,7 @@ const ImageGallery = React.createClass({
     let slides = []
     let thumbnails = []
     let bullets = []
+    let actionBar;
 
     this.props.items.map((item, index) => {
       let alignment = this._getAlignmentClassName(index)
@@ -356,6 +360,14 @@ const ImageGallery = React.createClass({
           </li>
         )
       }
+
+      if (this.props.showCloseButton && typeof(this.props.onCloseClick) === 'function') {
+          actionBar = (
+              <div className='image-gallery-actionbar'>
+                  <div onClick={this.props.onCloseClick} className='image-gallery-closeButton'></div>
+              </div>
+          )
+      }
     })
 
     let swipePrev = this.slideToIndex.bind(this, currentIndex - 1)
@@ -363,6 +375,7 @@ const ImageGallery = React.createClass({
     let itemsTotal = this.props.items.length
     return (
       <section ref={(i) => this._imageGallery = i} className='image-gallery'>
+        {actionBar}
         <div
           onMouseOver={this._handleMouseOver}
           onMouseLeave={this._handleMouseLeave}

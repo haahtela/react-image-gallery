@@ -16,7 +16,9 @@ const App = React.createClass({
       showBullets: true,
       showThumbnails: true,
       showNav: true,
-      slideInterval: 4000
+      slideInterval: 4000,
+      showCloseButton: true,
+      isVisible: true
     }
   },
 
@@ -26,6 +28,10 @@ const App = React.createClass({
       this._pauseSlider()
       this._playSlider()
     }
+  },
+
+  handleCloseClick() {
+      this.setState({ isVisible: false });
   },
 
   _pauseSlider() {
@@ -45,43 +51,23 @@ const App = React.createClass({
   render() {
     const images = [
       {
-        original: 'http://lorempixel.com/1000/600/nature/1/',
-        thumbnail: 'http://lorempixel.com/250/150/nature/1/',
+        original: 'https://www.haahtela.fi/images/pics/rakennuttamisen_referenssit/allergiatalo_3.jpg',
+        thumbnail: 'https://www.haahtela.fi/images/pics/rakennuttamisen_referenssit/allergiatalo_3.jpg',
         originalClass: 'featured-slide',
         thumbnailClass: 'featured-thumb',
         description: 'Custom class for slides & thumbnails'
       },
       {
-        original: 'http://lorempixel.com/1000/600/nature/2/',
-        thumbnail: 'http://lorempixel.com/250/150/nature/2/',
+        original: 'https://www.haahtela.fi/images/pics/rakennuttamisen_referenssit/allergiatalo_3.jpg',
+        thumbnail: 'https://www.haahtela.fi/images/pics/rakennuttamisen_referenssit/allergiatalo_3.jpg',
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing...'
-      },
-      {
-        original: 'http://lorempixel.com/1000/600/nature/3/',
-        thumbnail: 'http://lorempixel.com/250/150/nature/3/'
-      },
-      {
-        original: 'http://lorempixel.com/1000/600/nature/4/',
-        thumbnail: 'http://lorempixel.com/250/150/nature/4/'
-      },
-      {
-        original: 'http://lorempixel.com/1000/600/nature/5/',
-        thumbnail: 'http://lorempixel.com/250/150/nature/5/'
-      },
-      {
-        original: 'http://lorempixel.com/1000/600/nature/6/',
-        thumbnail: 'http://lorempixel.com/250/150/nature/6/'
-      },
-      {
-        original: 'http://lorempixel.com/1000/600/nature/7/',
-        thumbnail: 'http://lorempixel.com/250/150/nature/7/'
       }
     ]
 
-    return (
+    let gallery;
 
-      <section className='app'>
-        <ImageGallery
+    if (this.state.isVisible) {
+        gallery = (<ImageGallery
           ref={(i) => this._imageGallery = i}
           items={images}
           lazyLoad={false}
@@ -92,7 +78,15 @@ const App = React.createClass({
           slideInterval={parseInt(this.state.slideInterval)}
           autoPlay={this.state.isPlaying}
           slideOnThumbnailHover={this.state.slideOnThumbnailHover}
-        />
+          showCloseButton={this.state.showCloseButton}
+          onCloseClick={this.handleCloseClick}
+        />);
+    }
+
+    return (
+
+      <section className='app'>
+        {gallery}
 
         <div className='app-sandbox'>
 
@@ -165,4 +159,3 @@ const App = React.createClass({
 })
 
 ReactDOM.render(<App/>, document.getElementById('container'))
-
