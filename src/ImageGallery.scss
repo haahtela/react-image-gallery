@@ -13,6 +13,23 @@ $ig-blue: #337ab7;
   @include vendor-prefix('user-select', none);
 }
 
+.image-gallery-actionbar {
+	height: 20px;
+	width: 100%;
+	
+	.image-gallery-closeButton {
+		float: right;
+		color: black;
+		cursor: pointer;
+		width: 12px;
+		height: 12px;
+		
+		&:before {
+			content: 'X';
+		}
+	}
+}
+
 .image-gallery-content {
   position: relative;
 
