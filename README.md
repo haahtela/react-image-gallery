@@ -107,6 +107,8 @@ render: function() {
 * `startIndex`: Integer, default `0`
 * `onSlide`: Function, `callback(index)`
 * `onClick`: Function, `callback(event)`
+* `showCloseButton`: Boolean, default `false`
+* `onCloseClick`: Function, `callback(event)`
 
 
 # functions
