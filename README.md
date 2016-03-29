@@ -5,7 +5,7 @@ Responsive image gallery, slideshow, carousel
 ## Install
 
 ```sh
-npm install react-image-gallery
+npm install evolved-react-image-gallery
 ```
 
 ## Demo & Examples
