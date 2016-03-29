@@ -23,7 +23,8 @@ const ImageGallery = React.createClass({
     disableThumbnailScroll: React.PropTypes.bool,
     slideOnThumbnailHover: React.PropTypes.bool,
     server: React.PropTypes.bool,
-    onCloseClick: React.PropTypes.func
+    onCloseClick: React.PropTypes.func,
+    useKeyboardNavigation: React.PropTypes.bool
   },
 
   getDefaultProps() {
@@ -40,7 +41,8 @@ const ImageGallery = React.createClass({
       server: false,
       slideOnThumbnailHover: false,
       slideInterval: 4000,
-      startIndex: 0
+      startIndex: 0,
+      useKeyboardNavigation: true
     }
   },
 
@@ -107,6 +109,8 @@ const ImageGallery = React.createClass({
       this.play()
     }
     window.addEventListener('resize', this._handleResize)
+
+    this.refs.gallerycontent.focus();
   },
 
   componentWillUnmount() {
@@ -225,6 +229,36 @@ const ImageGallery = React.createClass({
       }
     }
     this.setState({hovering: false})
+  },
+
+  _handleKeyDown(e) {
+
+      if (this.props.useKeyboardNavigation) {
+
+          let currentIndex = this.state.currentIndex;
+
+          switch (e.which) {
+              case 39: {
+                  // Right arrow
+                  this.slideToIndex(currentIndex + 1, e);
+                  break;
+              }
+              case 37: {
+                  // Left arrow
+                  this.slideToIndex(currentIndex - 1, e);
+                  break;
+              }
+              case 27: {
+                  // Esc
+                  if(typeof(this.props.onCloseClick) === 'function'){
+                      this.props.onCloseClick(e);
+                  }
+                  break;
+              }
+              default:
+                  return;
+          }
+      }
   },
 
   _handleMouseOver() {
@@ -377,8 +411,11 @@ const ImageGallery = React.createClass({
       <section ref={(i) => this._imageGallery = i} className='image-gallery'>
         {actionBar}
         <div
+          tabIndex='1'
           onMouseOver={this._handleMouseOver}
           onMouseLeave={this._handleMouseLeave}
+          onKeyDown={this._handleKeyDown}
+          ref='gallerycontent'
           className='image-gallery-content'>
           {
             itemsTotal >= 2 ?

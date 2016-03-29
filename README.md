@@ -109,7 +109,8 @@ render: function() {
 * `onClick`: Function, `callback(event)`
 * `showCloseButton`: Boolean, default `false`
 * `onCloseClick`: Function, `callback(event)`
-
+* `useKeyboardNavigation`: Boolean, default `true`
+  * ability to use left and right arrows for navigation and esc button for triggering onCloseClick callback.
 
 # functions
 
