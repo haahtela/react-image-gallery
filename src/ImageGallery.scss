@@ -16,14 +16,14 @@ $ig-blue: #337ab7;
 .image-gallery-actionbar {
 	height: 20px;
 	width: 100%;
-	
+
 	.image-gallery-closeButton {
 		float: right;
 		color: black;
 		cursor: pointer;
 		width: 12px;
 		height: 12px;
-		
+
 		&:before {
 			content: 'X';
 		}
@@ -133,6 +133,43 @@ $ig-blue: #337ab7;
       padding: 8px 15px;
     }
 
+  }
+}
+
+.image-gallery-menu {
+  bottom: 40px;
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  z-index: 3;
+
+  .image-gallery-menu-container {
+    margin: 0;
+    padding: 0;
+  }
+
+  .gallerymenu-item-css {
+    box-shadow: 0 1px 0 $ig-black;
+    cursor: pointer;
+    border: 0px;
+    display: inline-block;
+    margin: 0 5px;
+    padding: 5px;
+    text-decoration: none;
+
+    @media (max-width: $ig-screen-sm-min) {
+      margin: 0 3px;
+      padding: 3px;
+    }
+
+    &.active {
+      background: $ig-white;
+    }
+
+    &:hover {
+      color: white;
+      text-decoration: underline;
+    }
   }
 }
 
