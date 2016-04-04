@@ -7,6 +7,7 @@ const ImageGallery = React.createClass({
 
   propTypes: {
     items: React.PropTypes.array.isRequired,
+    gallerymenu: React.PropTypes.array,
     showThumbnails: React.PropTypes.bool,
     showBullets: React.PropTypes.bool,
     showCloseButton: React.PropTypes.bool,
@@ -110,6 +111,13 @@ const ImageGallery = React.createClass({
     }
     window.addEventListener('resize', this._handleResize)
 
+    const fn = window.onkeydown;
+    window.onkeydown = (e) => {
+        // handle event
+        this._handleKeyDown(e);
+    };
+    this.origFn = fn;
+
     this.refs.gallerycontent.focus();
   },
 
@@ -119,6 +127,8 @@ const ImageGallery = React.createClass({
       window.clearInterval(this._intervalId)
       this._intervalId = null
     }
+
+    window.onkeydown = this.origFn;
   },
 
   slideToIndex(index, event) {
@@ -326,6 +336,10 @@ const ImageGallery = React.createClass({
     let bullets = []
     let actionBar;
 
+    let gallerymenu = this.props.gallerymenu || [];
+    let gallerymenudom;
+    let gallerymenuitems = [];    
+
     this.props.items.map((item, index) => {
       let alignment = this._getAlignmentClassName(index)
       let originalClass = item.originalClass ? ' ' + item.originalClass : ''
@@ -394,15 +408,25 @@ const ImageGallery = React.createClass({
           </li>
         )
       }
-
-      if (this.props.showCloseButton && typeof(this.props.onCloseClick) === 'function') {
-          actionBar = (
-              <div className='image-gallery-actionbar'>
-                  <div onClick={this.props.onCloseClick} className='image-gallery-closeButton'></div>
-              </div>
-          )
-      }
     })
+
+    if (this.props.showCloseButton && typeof(this.props.onCloseClick) === 'function') {
+        actionBar = (
+            <div className='image-gallery-actionbar'>
+                <div onClick={this.props.onCloseClick} className='image-gallery-closeButton'></div>
+            </div>
+        )
+    }
+
+    if (gallerymenu) {
+        gallerymenu.map((item, index) => {
+            gallerymenuitems.push(
+                <li key={index} className='gallerymenu-item-css'>
+                    <a key={index} onClick={this._wrapClick(item.callback.bind(this, currentIndex))}>{item.text}</a>
+                </li>
+            )
+        })
+    }
 
     let swipePrev = this.slideToIndex.bind(this, currentIndex - 1)
     let swipeNext = this.slideToIndex.bind(this, currentIndex + 1)
@@ -414,7 +438,6 @@ const ImageGallery = React.createClass({
           tabIndex='1'
           onMouseOver={this._handleMouseOver}
           onMouseLeave={this._handleMouseLeave}
-          onKeyDown={this._handleKeyDown}
           ref='gallerycontent'
           className='image-gallery-content'>
           {
@@ -447,6 +470,14 @@ const ImageGallery = React.createClass({
             :
               <div className='image-gallery-slides'>
                 {slides}
+              </div>
+          }
+          {
+            gallerymenu &&
+              <div className='image-gallery-menu'>
+                <ul className='image-gallery-menu-container'>
+                  {gallerymenuitems}
+                </ul>
               </div>
           }
           {

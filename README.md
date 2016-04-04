@@ -69,6 +69,16 @@ var images = [
   }
 ];
 
+var gallerymenu;
+
+// Add an action link for each image.
+gallerymenu.push({
+	text: 'Download',
+	callback: function(idx) {
+		//Do something with image at given index.
+	}
+});
+
 handleSlide: function(index) {
   console.log('Slid to ' + index);
 },
@@ -77,6 +87,7 @@ render: function() {
   return (
     <ImageGallery
       items={images}
+	  gallerymenu={gallerymenu}
       autoPlay={true}
       slideInterval={4000}
       onSlide={this.handleSlide}/>
@@ -88,6 +99,7 @@ render: function() {
 # Props
 
 * `items`: (required) Array of objects, see example above,
+* `gallerymenu`: Array of objects, see example above
 * `lazyLoad`: Boolean, default `true`
 * `showNav`: Boolean, default `true`
 * `showThumbnails`: Boolean, default `true`
