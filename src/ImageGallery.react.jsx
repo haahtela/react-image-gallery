@@ -338,7 +338,7 @@ const ImageGallery = React.createClass({
 
     let gallerymenu = this.props.gallerymenu || [];
     let gallerymenudom;
-    let gallerymenuitems = [];
+    let gallerymenuitems = [];    
 
     this.props.items.map((item, index) => {
       let alignment = this._getAlignmentClassName(index)
