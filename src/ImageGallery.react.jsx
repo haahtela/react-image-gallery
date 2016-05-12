@@ -10,6 +10,7 @@ const ImageGallery = React.createClass({
     gallerymenu: React.PropTypes.array,
     showThumbnails: React.PropTypes.bool,
     showBullets: React.PropTypes.bool,
+    showFileMeta: React.PropTypes.bool,
     showCloseButton: React.PropTypes.bool,
     showNav: React.PropTypes.bool,
     showIndex: React.PropTypes.bool,
@@ -35,6 +36,7 @@ const ImageGallery = React.createClass({
       showNav: true,
       showCloseButton: false,
       showBullets: false,
+      showFileMeta: false,
       showIndex: false,
       indexSeparator: ' / ',
       autoPlay: false,
@@ -338,12 +340,26 @@ const ImageGallery = React.createClass({
 
     let gallerymenu = this.props.gallerymenu || [];
     let gallerymenudom;
-    let gallerymenuitems = [];    
+    let gallerymenuitems = [];
 
     this.props.items.map((item, index) => {
       let alignment = this._getAlignmentClassName(index)
       let originalClass = item.originalClass ? ' ' + item.originalClass : ''
       let thumbnailClass = item.thumbnailClass ? ' ' + item.thumbnailClass : ''
+
+      let filemeta = [];
+
+      if (this.props.showFileMeta && item.filemeta) {
+          let x = 0;
+          for (var prop in item.filemeta) {
+              filemeta.push(
+                    <div className={prop + '-css image-filemeta-row-' + x}>
+                          {item.filemeta[prop]}
+                    </div>
+              )
+              x++;
+          }
+      }
 
       let slide = (
         <div
@@ -359,6 +375,7 @@ const ImageGallery = React.createClass({
               onLoad={this._handleImageLoad}
               onError={this._handleImageError}/>
             {item.description}
+            {filemeta}
         </div>
       )
 

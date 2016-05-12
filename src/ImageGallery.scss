@@ -3,6 +3,8 @@ $ig-white: #fff;
 $ig-black: #222;
 $ig-blue: #337ab7;
 
+$max-meta-rows: 3;
+
 @mixin vendor-prefix($name, $value) {
   @each $vendor in ('-webkit-', '-moz-', '-ms-', '-o-', '') {
     #{$vendor}#{$name}: #{$value};
@@ -113,6 +115,21 @@ $ig-blue: #337ab7;
 
     &.loaded {
       opacity: 1;
+    }
+  }
+
+  @for $i from 0 through $max-meta-rows {
+    .image-filemeta-row-#{$i} {
+
+        bottom: 80px;
+        position: absolute;
+        text-align: center;
+        width: 100%;
+        z-index: 4;
+
+        @if $i > 0 {
+            bottom: 80px + (20px * $i);
+        }
     }
   }
 
