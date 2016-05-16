@@ -353,7 +353,7 @@ const ImageGallery = React.createClass({
           let x = 0;
           for (var prop in item.filemeta) {
               filemeta.push(
-                    <div className={prop + '-css image-filemeta-row-' + x}>
+                    <div key={x} className={prop + '-css image-filemeta-row-' + x}>
                           {item.filemeta[prop]}
                     </div>
               )
