@@ -55,7 +55,11 @@ const App = React.createClass({
           thumbnail: 'http://lorempixel.com/250/150/nature/1/',
           originalClass: 'featured-slide',
           thumbnailClass: 'featured-thumb',
-          description: 'Custom class for slides & thumbnails'
+          description: 'Custom class for slides & thumbnails',
+          filemeta: {
+              added: '11.5.2016 13:50:00',
+              filename: 'file.jpg'
+          }
         },
         {
           original: 'http://lorempixel.com/1000/600/nature/2/',
@@ -68,7 +72,7 @@ const App = React.createClass({
         },
         {
           original: 'http://lorempixel.com/1000/600/nature/4/',
-          thumbnail: 'http://lorempixel.com/250/150/nature/4/'
+          thumbnail: 'http://lorempixel.com/250/150/nature/4/',
         },
         {
           original: 'http://lorempixel.com/1000/600/nature/5/',
@@ -84,6 +88,14 @@ const App = React.createClass({
         }
     ]
 
+    const gallerymenu = [];
+
+        gallerymenu.push({
+            text: 'test',
+            callback(idx) {
+            }
+        });
+
     let gallery;
 
     if (this.state.isVisible) {
@@ -91,6 +103,8 @@ const App = React.createClass({
           ref={(i) => this._imageGallery = i}
           items={images}
           lazyLoad={false}
+          gallerymenu={gallerymenu}
+          showFileMeta
           showBullets={this.state.showBullets}
           showThumbnails={this.state.showThumbnails}
           showIndex={this.state.showIndex}

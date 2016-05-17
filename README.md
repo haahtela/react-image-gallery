@@ -57,7 +57,11 @@ var images = [
     thumbnailClass: 'featured-thumb',
     originalAlt: 'original-alt',
     thumbnailAlt: 'thumbnail-alt',
-    description: 'Optional description...'
+    description: 'Optional description...',
+    filemeta: {
+        added: '11.5.2016 13:50:00',
+        filename: 'file.jpg'
+    }
   },
   {
     original: 'http://lorempixel.com/1000/600/nature/2/',
@@ -89,6 +93,7 @@ render: function() {
       items={images}
 	  gallerymenu={gallerymenu}
       autoPlay={true}
+      showFileMeta={true}
       slideInterval={4000}
       onSlide={this.handleSlide}/>
   );
@@ -103,6 +108,7 @@ render: function() {
 * `lazyLoad`: Boolean, default `true`
 * `showNav`: Boolean, default `true`
 * `showThumbnails`: Boolean, default `true`
+* `showFileMeta` : Boolean, default `false`
 * `showBullets`: Boolean, default `false`
 * `showIndex`: Boolean, default `false`
 * `server`: Boolean, default `false`
