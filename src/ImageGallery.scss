@@ -153,6 +153,14 @@ $max-meta-rows: 3;
   }
 }
 
+.filemetaContainer {
+  bottom: 70px;
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  z-index: 4;
+}
+
 .image-gallery-menu {
   bottom: 40px;
   position: absolute;

@@ -309,6 +309,34 @@ const ImageGallery = React.createClass({
     return alignment
   },
 
+  _getFileMeta(currentIndex) {
+      let filemeta = [];
+
+      let item = this.props.items.find(function(el, idx) {
+        return idx  === currentIndex;
+      });
+
+      if (!item)
+        return null;
+
+      if (!this.props.showFileMeta)
+        return null;
+
+      if (item.filemeta) {
+          let x = 0;
+          for (var prop in item.filemeta) {
+              filemeta.push(
+                    <div key={x} className={prop + '-css image-filemeta-row-' + x}>
+                          {item.filemeta[prop]}
+                    </div>
+              )
+              x++;
+          }
+      }
+
+      return (<div className='filemetaContainer'>{filemeta}</div>);
+  },
+
   _handleImageLoad(event) {
     // slide images have an opacity of 0, onLoad the class 'loaded' is added
     // so that it transitions smoothly when navigating to non adjacent slides
@@ -347,20 +375,6 @@ const ImageGallery = React.createClass({
       let originalClass = item.originalClass ? ' ' + item.originalClass : ''
       let thumbnailClass = item.thumbnailClass ? ' ' + item.thumbnailClass : ''
 
-      let filemeta = [];
-
-      if (this.props.showFileMeta && item.filemeta) {
-          let x = 0;
-          for (var prop in item.filemeta) {
-              filemeta.push(
-                    <div key={x} className={prop + '-css image-filemeta-row-' + x}>
-                          {item.filemeta[prop]}
-                    </div>
-              )
-              x++;
-          }
-      }
-
       let slide = (
         <div
           key={index}
@@ -375,7 +389,6 @@ const ImageGallery = React.createClass({
               onLoad={this._handleImageLoad}
               onError={this._handleImageError}/>
             {item.description}
-            {filemeta}
         </div>
       )
 
@@ -489,6 +502,7 @@ const ImageGallery = React.createClass({
                 {slides}
               </div>
           }
+          {this._getFileMeta(currentIndex)}
           {
             gallerymenu &&
               <div className='image-gallery-menu'>
