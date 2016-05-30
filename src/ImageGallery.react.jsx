@@ -312,9 +312,13 @@ const ImageGallery = React.createClass({
   _getFileMeta(currentIndex) {
       let filemeta = [];
 
-      let item = this.props.items.find(function(el, idx) {
-        return idx  === currentIndex;
-      });
+      let item;
+
+      for(var i = 0; i < this.props.items.length; i++){
+        if (i === currentIndex) {
+          item = this.props.items[i];
+        }
+      }
 
       if (!item)
         return null;
