@@ -59,7 +59,7 @@ const ImageGallery = React.createClass({
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.containerWidth !== this.state.containerWidth ||
-        prevProps.showThumbnails !== this.props.showThumbnails) {
+      prevProps.showThumbnails !== this.props.showThumbnails) {
 
       // adjust thumbnail container when window width is adjusted
       // when the container resizes, thumbnailsTranslateX
@@ -115,8 +115,8 @@ const ImageGallery = React.createClass({
 
     const fn = window.onkeydown;
     window.onkeydown = (e) => {
-        // handle event
-        this._handleKeyDown(e);
+      // handle event
+      this._handleKeyDown(e);
     };
     this.origFn = fn;
 
@@ -137,11 +137,11 @@ const ImageGallery = React.createClass({
     let slideCount = this.props.items.length - 1
 
     if (index < 0) {
-      this.setState({currentIndex: slideCount})
+      this.setState({ currentIndex: slideCount })
     } else if (index > slideCount) {
-      this.setState({currentIndex: 0})
+      this.setState({ currentIndex: 0 })
     } else {
-      this.setState({currentIndex: index})
+      this.setState({ currentIndex: index })
     }
     if (event) {
       if (this._intervalId) {
@@ -190,11 +190,11 @@ const ImageGallery = React.createClass({
   },
 
   _setThumbnailsTranslateX(x) {
-    this.setState({thumbnailsTranslateX: x})
+    this.setState({ thumbnailsTranslateX: x })
   },
 
   _handleResize() {
-    this.setState({containerWidth: this._imageGallery.offsetWidth})
+    this.setState({ containerWidth: this._imageGallery.offsetWidth })
   },
 
   _getScrollX(indexDifference) {
@@ -220,7 +220,7 @@ const ImageGallery = React.createClass({
 
   _handleMouseOverThumbnails(index) {
     if (this.props.slideOnThumbnailHover) {
-      this.setState({hovering: true})
+      this.setState({ hovering: true })
       if (this._thumbnailTimer) {
         window.clearTimeout(this._thumbnailTimer)
         this._thumbnailTimer = null
@@ -240,45 +240,45 @@ const ImageGallery = React.createClass({
         this.play()
       }
     }
-    this.setState({hovering: false})
+    this.setState({ hovering: false })
   },
 
   _handleKeyDown(e) {
 
-      if (this.props.useKeyboardNavigation) {
+    if (this.props.useKeyboardNavigation) {
 
-          let currentIndex = this.state.currentIndex;
+      let currentIndex = this.state.currentIndex;
 
-          switch (e.which) {
-              case 39: {
-                  // Right arrow
-                  this.slideToIndex(currentIndex + 1, e);
-                  break;
-              }
-              case 37: {
-                  // Left arrow
-                  this.slideToIndex(currentIndex - 1, e);
-                  break;
-              }
-              case 27: {
-                  // Esc
-                  if(typeof(this.props.onCloseClick) === 'function'){
-                      this.props.onCloseClick(e);
-                  }
-                  break;
-              }
-              default:
-                  return;
+      switch (e.which) {
+        case 39: {
+          // Right arrow
+          this.slideToIndex(currentIndex + 1, e);
+          break;
+        }
+        case 37: {
+          // Left arrow
+          this.slideToIndex(currentIndex - 1, e);
+          break;
+        }
+        case 27: {
+          // Esc
+          if (typeof (this.props.onCloseClick) === 'function') {
+            this.props.onCloseClick(e);
           }
+          break;
+        }
+        default:
+          return;
       }
+    }
   },
 
   _handleMouseOver() {
-    this.setState({hovering: true})
+    this.setState({ hovering: true })
   },
 
   _handleMouseLeave() {
-    this.setState({hovering: false})
+    this.setState({ hovering: false })
   },
 
   _getAlignmentClassName(index) {
@@ -310,35 +310,37 @@ const ImageGallery = React.createClass({
   },
 
   _getFileMeta(currentIndex) {
-      let filemeta = [];
+    let filemeta = [];
 
-      let item;
+    let item;
 
-      for(var i = 0; i < this.props.items.length; i++){
-        if (i === currentIndex) {
-          item = this.props.items[i];
+    for (var i = 0; i < this.props.items.length; i++) {
+      if (i === currentIndex) {
+        item = this.props.items[i];
+      }
+    }
+
+    if (!item)
+      return null;
+
+    if (!this.props.showFileMeta)
+      return null;
+
+    if (item.filemeta) {
+      let x = 0;
+      for (var prop in item.filemeta) {
+        if (prop !== 'rotation') {
+          filemeta.push(
+            <div key={x} className={prop + '-css image-filemeta-row-' + x}>
+              {item.filemeta[prop]}
+            </div>
+          )
         }
+        x++;
       }
+    }
 
-      if (!item)
-        return null;
-
-      if (!this.props.showFileMeta)
-        return null;
-
-      if (item.filemeta) {
-          let x = 0;
-          for (var prop in item.filemeta) {
-              filemeta.push(
-                    <div key={x} className={prop + '-css image-filemeta-row-' + x}>
-                          {item.filemeta[prop]}
-                    </div>
-              )
-              x++;
-          }
-      }
-
-      return (<div className='filemetaContainer'>{filemeta}</div>);
+    return (<div className='filemetaContainer'>{filemeta}</div>);
   },
 
   _handleImageLoad(event) {
@@ -375,6 +377,10 @@ const ImageGallery = React.createClass({
     let gallerymenuitems = [];
 
     this.props.items.map((item, index) => {
+      const rotation = this.props.propImages[index].filemeta.rotation || 0;
+      const rotationClass = {
+        transform: 'rotate(' + rotation + 'deg)'
+      }
       let alignment = this._getAlignmentClassName(index)
       let originalClass = item.originalClass ? ' ' + item.originalClass : ''
       let thumbnailClass = item.thumbnailClass ? ' ' + item.thumbnailClass : ''
@@ -382,17 +388,18 @@ const ImageGallery = React.createClass({
       let slide = (
         <div
           key={index}
+          style={rotationClass}
           className={'image-gallery-slide' + alignment + originalClass}
           onClick={this._wrapClick(this.props.onClick)}
           onTouchStart={this.props.onClick}
           onTouchEnd={this._touchEnd} >
-            <img
-              className={this.props.server ? 'loaded' : null}
-              src={item.original}
-              alt={item.originalAlt}
-              onLoad={this._handleImageLoad}
-              onError={this._handleImageError}/>
-            {item.description}
+          <img
+            className={this.props.server ? 'loaded' : null}
+            src={item.original}
+            alt={item.originalAlt}
+            onLoad={this._handleImageLoad}
+            onError={this._handleImageError} />
+          {item.description}
         </div>
       )
 
@@ -423,7 +430,7 @@ const ImageGallery = React.createClass({
             <img
               src={item.thumbnail}
               alt={item.thumbnailAlt}
-              onError={this._handleImageError}/>
+              onError={this._handleImageError} />
           </a>
         )
       }
@@ -444,22 +451,22 @@ const ImageGallery = React.createClass({
       }
     })
 
-    if (this.props.showCloseButton && typeof(this.props.onCloseClick) === 'function') {
-        actionBar = (
-            <div className='image-gallery-actionbar'>
-                <div onClick={this.props.onCloseClick} className='image-gallery-closeButton'></div>
-            </div>
-        )
+    if (this.props.showCloseButton && typeof (this.props.onCloseClick) === 'function') {
+      actionBar = (
+        <div className='image-gallery-actionbar'>
+          <div onClick={this.props.onCloseClick} className='image-gallery-closeButton'></div>
+        </div>
+      )
     }
 
     if (gallerymenu) {
-        gallerymenu.map((item, index) => {
-            gallerymenuitems.push(
-                <li key={index} className='gallerymenu-item-css'>
-                    <a key={index} onClick={this._wrapClick(item.callback.bind(this, currentIndex))}>{item.text}</a>
-                </li>
-            )
-        })
+      gallerymenu.map((item, index) => {
+        gallerymenuitems.push(
+          <li key={index} className='gallerymenu-item-css'>
+            <a key={index} onClick={this._wrapClick(item.callback.bind(this, currentIndex))}>{item.text}</a>
+          </li>
+        )
+      })
     }
 
     let swipePrev = this.slideToIndex.bind(this, currentIndex - 1)
@@ -478,20 +485,20 @@ const ImageGallery = React.createClass({
             itemsTotal >= 2 ?
               [
                 this.props.showNav &&
-                  [
-                    <a
-                      key='leftNav'
-                      className='image-gallery-left-nav'
-                      onTouchStart={swipePrev}
-                      onTouchEnd={this._touchEnd}
-                      onClick={this._wrapClick(swipePrev)}/>,
-                    <a
-                      key='rightNav'
-                      className='image-gallery-right-nav'
-                      onTouchStart={swipeNext}
-                      onTouchEnd={this._touchEnd}
-                      onClick={this._wrapClick(swipeNext)}/>
-                  ],
+                [
+                  <a
+                    key='leftNav'
+                    className='image-gallery-left-nav'
+                    onTouchStart={swipePrev}
+                    onTouchEnd={this._touchEnd}
+                    onClick={this._wrapClick(swipePrev)} />,
+                  <a
+                    key='rightNav'
+                    className='image-gallery-right-nav'
+                    onTouchStart={swipeNext}
+                    onTouchEnd={this._touchEnd}
+                    onClick={this._wrapClick(swipeNext)} />
+                ],
                 <Swipeable
                   key='swipeable'
                   onSwipedLeft={swipeNext}
@@ -501,7 +508,7 @@ const ImageGallery = React.createClass({
                   </div>
                 </Swipeable>
               ]
-            :
+              :
               <div className='image-gallery-slides'>
                 {slides}
               </div>
@@ -509,46 +516,46 @@ const ImageGallery = React.createClass({
           {this._getFileMeta(currentIndex)}
           {
             gallerymenu &&
-              <div className='image-gallery-menu'>
-                <ul className='image-gallery-menu-container'>
-                  {gallerymenuitems}
-                </ul>
-              </div>
+            <div className='image-gallery-menu'>
+              <ul className='image-gallery-menu-container'>
+                {gallerymenuitems}
+              </ul>
+            </div>
           }
           {
             this.props.showBullets &&
-              <div className='image-gallery-bullets'>
-                <ul className='image-gallery-bullets-container'>
-                  {bullets}
-                </ul>
-              </div>
+            <div className='image-gallery-bullets'>
+              <ul className='image-gallery-bullets-container'>
+                {bullets}
+              </ul>
+            </div>
           }
           {
             this.props.showIndex &&
-              <div className='image-gallery-index'>
-                <span className='image-gallery-index-current'>
-                  {this.state.currentIndex + 1}
-                </span>
-                <span className='image-gallery-index-separator'>
-                  {this.props.indexSeparator}
-                </span>
-                <span className='image-gallery-index-total'>
-                  {itemsTotal}
-                </span>
-              </div>
+            <div className='image-gallery-index'>
+              <span className='image-gallery-index-current'>
+                {this.state.currentIndex + 1}
+              </span>
+              <span className='image-gallery-index-separator'>
+                {this.props.indexSeparator}
+              </span>
+              <span className='image-gallery-index-total'>
+                {itemsTotal}
+              </span>
+            </div>
           }
         </div>
 
         {
           this.props.showThumbnails &&
-            <div className='image-gallery-thumbnails'>
-              <div
-                ref={(t) => this._thumbnails = t}
-                className='image-gallery-thumbnails-container'
-                style={thumbnailStyle}>
-                {thumbnails}
-              </div>
+          <div className='image-gallery-thumbnails'>
+            <div
+              ref={(t) => this._thumbnails = t}
+              className='image-gallery-thumbnails-container'
+              style={thumbnailStyle}>
+              {thumbnails}
             </div>
+          </div>
         }
       </section>
     )
