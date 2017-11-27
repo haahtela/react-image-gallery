@@ -428,6 +428,7 @@ const ImageGallery = React.createClass({
             onClick={this._wrapClick(this.slideToIndex.bind(this, index))}>
 
             <img
+              style={rotationClass}
               src={item.thumbnail}
               alt={item.thumbnailAlt}
               onError={this._handleImageError} />
